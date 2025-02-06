@@ -17,7 +17,7 @@ cache:
 
 install:
   stage: install
-  image: syngit.txxcd.com:4567/docker/hyperf:$HYPERF_IMAGE_TAG
+  image: registry.cn-shanghai.aliyuncs.com/docker/hyperf:$HYPERF_IMAGE_TAG
   script:
     - composer install
   except:
@@ -28,7 +28,7 @@ install:
 
 语法检查:
   stage: test
-  image: syngit.txxcd.com:4567/docker/hyperf:$HYPERF_IMAGE_TAG
+  image: registry.cn-shanghai.aliyuncs.com/docker/hyperf:$HYPERF_IMAGE_TAG
   except:
     - triggers
     - develop
@@ -36,7 +36,7 @@ install:
     - ./phptest.sh
 #phpcs:
 #  stage: test
-#  image: syngit.txxcd.com:4567/docker/hyperf:$HYPERF_IMAGE_TAG
+#  image: registry.cn-shanghai.aliyuncs.com/docker/hyperf:$HYPERF_IMAGE_TAG
 #  except:
 #    - triggers
 #    - develop
@@ -45,7 +45,7 @@ install:
 #    - composer cs
 phpstan:
   stage: test
-  image: syngit.txxcd.com:4567/docker/hyperf:$HYPERF_IMAGE_TAG
+  image: registry.cn-shanghai.aliyuncs.com/docker/hyperf:$HYPERF_IMAGE_TAG
   except:
     - triggers
     - develop
@@ -55,7 +55,7 @@ phpstan:
     - composer analyse
 phpunit:
   stage: test
-  image: syngit.txxcd.com:4567/docker/hyperf:$HYPERF_IMAGE_TAG
+  image: registry.cn-shanghai.aliyuncs.com/docker/hyperf:$HYPERF_IMAGE_TAG
   services:
     - redis:6.0
     - mysql:8.0
@@ -75,7 +75,7 @@ phpunit:
 
 development:
   stage: deploy
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   environment: development
   only:
     - develop
@@ -100,7 +100,7 @@ development:
     - ./deploy.sh
 test:
   stage: deploy
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   environment: test
   except:
     - cd
@@ -126,7 +126,7 @@ test:
     - ./deploy.sh
 pre:
   stage: deploy
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   environment: pre
   except:
     - cd
@@ -151,7 +151,7 @@ pre:
     - ./deploy.sh
 product:
   stage: deploy
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   environment: product
   except:
     - cd
@@ -178,7 +178,7 @@ product:
     - ./deploy.sh
 自动合并到develop分支:
   stage: auto-merge
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   only:
     - master
   except:
@@ -200,7 +200,7 @@ product:
 
 代码有毒通知:
   stage: cleanup_build
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   except:
     - triggers
   script:
@@ -209,7 +209,7 @@ product:
   when: on_failure
 发布失败通知:
   stage: cleanup_build
-  image: syngit.txxcd.com:4567/docker/deploy:latest
+  image: registry.cn-shanghai.aliyuncs.com/docker/deploy:latest
   only:
     - triggers
   script:
