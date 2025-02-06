@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: niki-pro
+
+patchesStrategicMerge:
+- replica-and-rollout-strategy.yaml
+- env.yaml
+- resource-limit.yaml
+
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ name: tencent-registry-maitang }]
+
+images:
+- name: syngit.txxcd.com:4567/niki/games-admin
+  newName: registry-pro.maitang.co/niki/games-admin
+  newTag: 97d68fe3d586292cc1f77b9aeba294b731d500dc-62449
+resources:
+- ../../base
+- ./hpa.yaml
+commonAnnotations:
+  appENV: product
+  gitBranch: master
+  gitCommitMessage: Merge branch 'cd' into 'master'
+  gitCommitSHA: 97d68fe3d586292cc1f77b9aeba294b731d500dc
+  gitJobID: "163904"
+  gitUser: chengcheng.you@axiaodiao.com

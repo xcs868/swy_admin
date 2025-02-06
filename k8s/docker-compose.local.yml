@@ -1,0 +1,61 @@
+version: '3'
+services:
+  games-admin:
+    image: syngit.txxcd.com:4567/docker/hyperf:debug
+    container_name: games-admin
+    env_file:
+      - ../.env
+    dns:
+      - 192.168.50.42
+      - 10.43.0.10
+      - 223.5.5.5
+    environment:
+      - APP_ENV=local
+      - APP_NAME=auth
+      - APOLLO_CONFIG_SERVER=http://apollo-service-dev-apollo-configservice.apollo.svc.cluster.local
+      - APOLLO_APP_ID=auth
+      - APOLLO_NAMESPACES=application
+      - APOLLO_CLUSTER=default
+      - PHP_YASD_REMOTE_HOST=192.168.0.101
+      - EXEC_CMD=rm -fr ./runtime/*
+    volumes:
+      - ../:/var/www/html
+    command: ["php", "artisan", "server:watch"]
+    ports:
+      - 80:80
+  # mysql:
+  #   image: mysql:5.6
+  #   container_name: mysql
+  #   environment:
+  #     - MYSQL_DATABASE=auth
+  #     - MYSQL_ROOT_PASSWORD=loveclub123
+  #   ports:
+  #     - 3307:3306
+  # redis:
+  #   image: redis:6.0
+  #   container_name: redis
+  #   ports:
+  #     - 6380:6379
+  dump-server:
+    image: syngit.txxcd.com:4567/docker/hyperf:debug
+    container_name: dump-server
+    env_file:
+      - ../.env
+    dns:
+      - 192.168.50.42
+      - 10.43.0.10
+      - 223.5.5.5
+    environment:
+      - APP_ENV=local
+      - APP_NAME=auth
+      - APOLLO_CONFIG_SERVER=http://apollo-service-dev-apollo-configservice.apollo.svc.cluster.local
+      - APOLLO_APP_ID=auth
+      - APOLLO_NAMESPACES=application
+      - APOLLO_CLUSTER=default
+      - PHP_YASD_REMOTE_HOST=192.168.0.101
+    volumes:
+      - ../:/var/www/html
+    command: ["php", "artisan", "dump-server"]
+    ports:
+      - 9912:9912
+    privileged: true

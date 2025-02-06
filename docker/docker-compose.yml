@@ -1,0 +1,29 @@
+version: '3.8'  # 指定一个明确的版本号
+services:
+  games-admin:
+    image: ${MAITANG_DEBUG_IMAGE_PHP_8_1}
+    container_name: ${GAMES_ADMIN_NAME}
+    environment:
+      - "TIMEZONE=Asia/Shanghai"
+      - "APP_SYSTEM_ENV=docker"
+      - "APP_ENV=local"
+      - "APP_NAME=${GAMES_ADMIN_NAME}"
+      - "EXEC_CMD=rm -fr ./runtime/*"
+    env_file:
+      - ../.env
+    working_dir: "/var/www/html"
+    extra_hosts:
+      - host.docker.internal:${LOCAL_IP}
+    dns:
+      - ${MAITANG_DNS}
+    ports:
+      - ${GAMES_ADMIN_PORT}:80
+      - ${GAMES_ADMIN_WS_PORT}:9502
+    volumes:
+      - ${MAITANG_SERVICE_CODE}/${GAMES_ADMIN_NAME}:/var/www/html
+    entrypoint: ["php", "watch", "-c"]
+#networks:
+#  default:
+#    external: true
+#    name: srv_network
+

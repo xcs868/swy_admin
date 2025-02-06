@@ -1,0 +1,9 @@
+{
+    "name": "Game",
+    "label": "游戏模块",
+    "description": "游戏模块",
+    "installed": true,
+    "enabled": true,
+    "version": "1.0",
+    "order": 0
+}

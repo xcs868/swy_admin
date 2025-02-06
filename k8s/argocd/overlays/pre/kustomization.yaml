@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: rd-pre
+
+patchesStrategicMerge:
+- replica-and-rollout-strategy.yaml
+- env.yaml
+- resource-limit.yaml
+
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ name: git-registry }]
+
+images:
+- name: syngit.txxcd.com:4567/niki/games-admin
+  newName: syngit.txxcd.com:4567/niki/games-admin
+  newTag: latest
+resources:
+- ../../base

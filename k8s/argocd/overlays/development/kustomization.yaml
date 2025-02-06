@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: niki-development
+
+patchesStrategicMerge:
+- replica-and-rollout-strategy.yaml
+- env.yaml
+- resource-limit.yaml
+
+images:
+- name: syngit.txxcd.com:4567/niki/games-admin
+  newName: testdev.tencentcloudcr.com/niki/games-admin
+  newTag: ad9a5eeb2b44425e70c5b0f0eebdf12f1553d178-59535
+resources:
+- ../../base
+commonAnnotations:
+  appENV: development
+  branch: ""
+  gitBranch: develop
+  gitCommitMessage: Merge branch 'cd' into 'develop'
+  gitCommitSHA: ad9a5eeb2b44425e70c5b0f0eebdf12f1553d178
+  gitJobID: "153816"
+  gitUser: chengcheng.you@axiaodiao.com

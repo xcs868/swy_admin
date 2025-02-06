@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    owner: niki
+    release: stable
+    environment: product
+    platform: php
+    type: api
+    service: games-admin
+    framework: hyperf
+    app: games-admin
+    version: master
+  name: games-admin
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      app: games-admin
+  template:
+    metadata:
+      labels:
+        owner: niki
+        release: stable
+        environment: product
+        platform: php
+        type: api
+        service: games-admin
+        framework: hyperf
+        app: games-admin
+        version: master
+    spec:
+      nodeSelector:
+        kind: worker
+      containers:
+        - name: games-admin
+          image: syngit.txxcd.com:4567/niki/games-admin:latest
+          envFrom:
+            - configMapRef: { name: games-admin-env }
+          ports:
+            - containerPort: 80
+              name: tcp
+            - containerPort: 9502
+              name: http-metrics
+          volumeMounts:
+            - name: games-admin-env
+              mountPath: /var/www/html/.env
+              subPath: .env
+          env:
+            - name: APP_TYPE
+              value: api
+            - name: ENABLE_KAFKA
+              value: "false"
+            - name: ENABLE_CRON
+              value: "false"
+            - name: ENABLE_QUEUE
+              value: "true"
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+            timeoutSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 15
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "/bin/sh", "-c", "sleep 5" ]
+      volumes:
+        - name: games-admin-env
+          configMap:
+            name: games-admin-env
+      terminationGracePeriodSeconds: 15
+      imagePullSecrets:
+        - name: tencent-registry-maitang
