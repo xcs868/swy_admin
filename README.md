@@ -20,7 +20,7 @@
 容器运行
 > cp docker/docker-compose.local.yml docker/docker-compose.yml
 
-> docker-compose -f k8s/docker-compose.yml
+> docker-compose -f docker/docker-compose.yml
 
 物理机运行
 

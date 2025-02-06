@@ -1,7 +1,7 @@
 version: '3.8'  # 指定一个明确的版本号
 services:
   games-admin:
-    image: ${MAITANG_DEBUG_IMAGE_PHP_8_1}
+    image: ${SWY_DEBUG_IMAGE_PHP_8_1}
     container_name: ${SWY_ADMIN_NAME}
     environment:
       - "TIMEZONE=Asia/Shanghai"
