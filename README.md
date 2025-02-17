@@ -2,7 +2,7 @@
 
 ### 介绍
 
-游戏后台项目 games-admin
+游戏后台项目 swy-admin
 
 - 前端地址
     - 开发：
@@ -20,7 +20,9 @@
 容器运行
 > cp docker/docker-compose.local.yml docker/docker-compose.yml
 
-> docker-compose -f docker/docker-compose.yml
+> docker-compose -f docker/docker-compose.yml up -d
+
+> php bin/hyperf.php start
 
 物理机运行
 
