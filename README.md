@@ -22,7 +22,14 @@
 
 > docker-compose -f docker/docker-compose.yml up -d
 
+> docker exec -it swy_admin sh
+> composer install
+
+如果发生容器内无法访问外网尝试修改容器内的DNS配置
+>echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4\nnameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
+
 > php bin/hyperf.php start
+> 
 
 物理机运行
 
